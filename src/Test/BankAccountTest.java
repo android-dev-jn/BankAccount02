@@ -46,7 +46,9 @@ public class BankAccountTest {
 	public void testPersistant() {
 		ArgumentCaptor<String> accountNumberCaptor = ArgumentCaptor.forClass(String.class);
 		BankAccountDTO bankAccountDTO = BankAccount.getAccount(accountNumber);
-		verify(mockBankAccountDAO, times(1)).getAccount(accountNumber);
+		verify(mockBankAccountDAO, times(1)).getAccount(accountNumberCaptor.capture());
+		
+		assertEquals(accountNumber, accountNumberCaptor.getValue());
 	}
 
 }

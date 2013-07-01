@@ -13,4 +13,9 @@ public class BankAccount {
 		return null;
 	}
 
+	public static BankAccountDTO getAccount(String accountNumber) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
