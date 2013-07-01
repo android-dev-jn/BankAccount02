@@ -1,10 +1,15 @@
 package BankAccount;
 
 public class BankAccountDTO {
+	
+	private String accountNumber;
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
 
 	public String getAccountNumber() {
-		// TODO Auto-generated method stub
-		return null;
+		return accountNumber;
 	}
 
 	public int getBalance() {
