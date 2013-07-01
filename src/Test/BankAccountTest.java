@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -37,27 +38,41 @@ public class BankAccountTest {
 				.forClass(BankAccountDTO.class);
 		verify(mockBankAccountDAO, times(1)).save(argumentCaptor.capture());
 
-		assertEquals(accountNumber, argumentCaptor.getValue().getAccountNumber());
+		assertEquals(accountNumber, argumentCaptor.getValue()
+				.getAccountNumber());
 		assertTrue(0 == argumentCaptor.getValue().getBalance());
 	}
-	
+
 	// 2
 	@Test
 	public void testPersistant() {
-		ArgumentCaptor<String> accountNumberCaptor = ArgumentCaptor.forClass(String.class);
+		ArgumentCaptor<String> accountNumberCaptor = ArgumentCaptor
+				.forClass(String.class);
 		BankAccountDTO bankAccountDTO = BankAccount.getAccount(accountNumber);
-		verify(mockBankAccountDAO, times(1)).getAccount(accountNumberCaptor.capture());
-		
+		verify(mockBankAccountDAO, times(1)).getAccount(
+				accountNumberCaptor.capture());
+
 		assertEquals(accountNumber, accountNumberCaptor.getValue());
 	}
-	
+
 	// 3
 	@Test
 	public void testDeposit() {
-		double amount = 100;
+		double amount = 100, DELTA = 1e-2;
+		;
 		String description = "deposit 100";
+
+		BankAccountDTO bankAccountDTO = new BankAccountDTO(accountNumber, 50);
+		when(mockBankAccountDAO.getAccount(bankAccountDTO.getAccountNumber()))
+				.thenReturn(bankAccountDTO);
 		BankAccount.deposit(accountNumber, amount, description);
-		
+
+		ArgumentCaptor<BankAccountDTO> argument = ArgumentCaptor
+				.forClass(BankAccountDTO.class);
+		verify(mockBankAccountDAO, times(1)).save(argument.capture());
+		assertEquals(150, argument.getValue().getBalance(), DELTA);
+		assertEquals(accountNumber, argument.getValue().getAccountNumber());
+
 	}
 
 }

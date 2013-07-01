@@ -1,8 +1,21 @@
 package BankAccount;
 
 public class BankAccountDTO {
-	
+
 	private String accountNumber;
+	private double balance;
+
+	public BankAccountDTO(String accountNumber2, double balance) {
+		this.accountNumber = accountNumber2;
+		this.balance = balance;
+	}
+
+	public BankAccountDTO() {
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
 
 	public void setAccountNumber(String accountNumber) {
 		this.accountNumber = accountNumber;
@@ -12,9 +25,8 @@ public class BankAccountDTO {
 		return accountNumber;
 	}
 
-	public int getBalance() {
-		// TODO Auto-generated method stub
-		return 0;
+	public double getBalance() {
+		return this.balance;
 	}
 
 }
