@@ -8,6 +8,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.util.Calendar;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
@@ -16,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 
 import BankAccount.BankAccountDAO;
 import BankAccount.BankAccountDTO;
+import BankAccount.TransactionDAO;
 import BankAccount.TransactionDTO;
 import BankAccountService.BankAccount;
 
@@ -23,6 +26,8 @@ public class BankAccountTest {
 	private String accountNumber = "1234567890";
 	@Mock
 	BankAccountDAO mockBankAccountDAO = mock(BankAccountDAO.class);
+	TransactionDAO mockTransactionDAO = mock(TransactionDAO.class);
+	Calendar mockCalendar = mock(Calendar.class);
 
 	@Before
 	public void setUp() {
