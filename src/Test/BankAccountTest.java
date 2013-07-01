@@ -18,6 +18,7 @@ import BankAccount.BankAccountDTO;
 import BankAccountService.BankAccount;
 
 public class BankAccountTest {
+	private String accountNumber = "1234567890";
 	@Mock
 	BankAccountDAO mockBankAccountDAO = mock(BankAccountDAO.class);
 
@@ -31,13 +32,21 @@ public class BankAccountTest {
 	// 1
 	@Test
 	public void testOpenAccount() {
-		BankAccountDTO bankAccountDTO = BankAccount.openAccount("123456789");
+		BankAccountDTO bankAccountDTO = BankAccount.openAccount(accountNumber);
 		ArgumentCaptor<BankAccountDTO> argumentCaptor = ArgumentCaptor
 				.forClass(BankAccountDTO.class);
 		verify(mockBankAccountDAO, times(1)).save(argumentCaptor.capture());
 
-		assertEquals("123456789", argumentCaptor.getValue().getAccountNumber());
+		assertEquals(accountNumber, argumentCaptor.getValue().getAccountNumber());
 		assertTrue(0 == argumentCaptor.getValue().getBalance());
+	}
+	
+	// 2
+	@Test
+	public void testPersistant() {
+		ArgumentCaptor<String> accountNumberCaptor = ArgumentCaptor.forClass(String.class);
+		BankAccountDTO bankAccountDTO = BankAccount.getAccount(accountNumber);
+		verify(mockBankAccountDAO, times(1)).getAccount(accountNumber);
 	}
 
 }
