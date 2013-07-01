@@ -50,5 +50,14 @@ public class BankAccountTest {
 		
 		assertEquals(accountNumber, accountNumberCaptor.getValue());
 	}
+	
+	// 3
+	@Test
+	public void testDeposit() {
+		double amount = 100;
+		String description = "deposit 100";
+		BankAccount.deposit(accountNumber, amount, description);
+		
+	}
 
 }
