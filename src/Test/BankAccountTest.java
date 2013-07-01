@@ -16,6 +16,7 @@ import org.mockito.MockitoAnnotations;
 
 import BankAccount.BankAccountDAO;
 import BankAccount.BankAccountDTO;
+import BankAccount.TransactionDTO;
 import BankAccountService.BankAccount;
 
 public class BankAccountTest {
@@ -59,7 +60,6 @@ public class BankAccountTest {
 	@Test
 	public void testDeposit() {
 		double amount = 100, DELTA = 1e-2;
-		;
 		String description = "deposit 100";
 
 		BankAccountDTO bankAccountDTO = new BankAccountDTO(accountNumber, 50);
@@ -72,7 +72,29 @@ public class BankAccountTest {
 		verify(mockBankAccountDAO, times(1)).save(argument.capture());
 		assertEquals(150, argument.getValue().getBalance(), DELTA);
 		assertEquals(accountNumber, argument.getValue().getAccountNumber());
+	}
+	
+	// 4
+	@Test
+	public void testTimeStampDeposit() {
+		String accountNumber = "1234567890";
+		double amount = 100;
+		long timestamp = 1000;
+		String description = "deposit 100";
 
+		BankAccountDTO bankAccount = new BankAccountDTO(accountNumber, 50);
+		when(mockBankAccountDAO.getAccount(bankAccount.getAccountNumber()))
+				.thenReturn(bankAccount);
+		when(mockCalendar.getTimeInMillis()).thenReturn(timestamp);
+		TransactionDTO transactionDTO = new TransactionDTO(accountNumber,
+				timestamp, amount, description);
+		
+		BankAccount.deposit(accountNumber, amount, description);
+		ArgumentCaptor<TransactionDTO> argumentCaptor = ArgumentCaptor
+				.forClass(TransactionDTO.class);
+		
+		verify(mockTransactionDAO).createTransaction(argumentCaptor.capture());
+		assertEquals(timestamp, argumentCaptor.getValue().getTimestamp());
 	}
 
 }
